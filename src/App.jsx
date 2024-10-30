@@ -1,33 +1,57 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState, useRef } from "react";
+import Comment from "./constants/components/comment";
 
 function App() {
-  const [count, setCount] = useState(0)
+
+  const [commentContainer, setCommentContainer] = useState([
+    {
+      user:"Matt",
+      desc:"Artistic"
+    },
+    {
+      user:"Rohan",
+      desc:"Nice Interview going"
+    },
+  ]);
+
+  const input = useRef();
+
+  const handleReply = () =>{
+    setCommentContainer([...commentContainer ,{user:'ROHAN', desc:input.current.value}])
+    console.log(commentContainer)
+    input.current.value = null;
+  }
+
+
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+
+    <div className=" bg-slate-600 flex w-screen h-screen justify-center items-center">
+
+      <div className="  m-auto w-[50%] h-[90%] bg-white">
+
+        <h1 className=" font-bold mx-6 my-4 underline text-xl ">Comments</h1>
+
+        <div className="px-7  h-[40%] overflow-y-auto">
+          {
+            commentContainer.map((comment, i) => (
+              <Comment key={i} name={comment.user} desc={comment.desc} value={input.current.value}/>
+            ))
+          }
+        </div>
+
+        <textarea ref={input} type="text" className="mx-10 border border-black border-1  w-[90%] h-[35%] p-4"></textarea>
+
+        <button onClick={handleReply} className="mx-16 my-5 bg-slate-600 text-white p-2 rounded-lg">Reply</button>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+
+      
+
+    </div>
+
+
+
     </>
   )
 }
